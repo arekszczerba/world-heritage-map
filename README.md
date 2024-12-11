@@ -9,13 +9,21 @@ World Heritage Map is an interactive web application that visualizes locations l
 - **Styling**: TailWindCSS, CSS
 - **Data**: CSV file with UNESCO World Heritage Site information
 
-### 1. Frontend Setup
+### 1. Configuration
+Before running the project, make sure to configure the environment variables.
+1. Create a `.env` file in the root of the frontend directory.
+2. Add the following line to define the backend API base URL:
+ ```bash
+   VITE_API_BASE_URL=http://localhost:5000
+Replace http://localhost:5000 with the appropriate backend URL if running in a different environment (e.g., a production server).
+
+### 2. Frontend Setup
 1. Install dependencies:
-    ```bash
-    npm install
+ ```bash
+   npm install
 2. Start the development server:
-    ```bash
-    npm run dev
+ ```bash
+   npm run dev
 
 The frontend will be available at http://localhost:5173 (default Vite port).
 
@@ -23,9 +31,11 @@ The frontend will be available at http://localhost:5173 (default Vite port).
 1. Navigate to the backend directory:
     ```bash
     cd server
+
 2. Install dependencies:
     ```bash
     npm install
+
 3. Start the server:
     ```bash
     npm run dev
