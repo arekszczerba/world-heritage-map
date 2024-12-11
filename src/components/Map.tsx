@@ -9,6 +9,7 @@ type Location = {
 	latitude: string;
 	longitude: string;
 	category: string;
+	short_description_en: string
 }
 
 const Map: React.FC = () => {
@@ -58,9 +59,9 @@ const Map: React.FC = () => {
 							>
 
 								<Popup>
-									<strong>{location.name_en}</strong>
-									<br />
-									Category: {location.category}
+									<h4><strong>{location.name_en}</strong></h4>
+									<div dangerouslySetInnerHTML={{ __html: location.short_description_en }} />
+									<strong>Category: {location.category}</strong>
 								</Popup>
 							</Marker>
 						);
