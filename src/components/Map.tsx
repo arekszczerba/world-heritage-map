@@ -3,7 +3,6 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { parseCSV } from '../services/api';
 import Filter from './Filter'
 
-// TODO: Add more fileds?
 type Location = {
 	id_no: string;
 	name_en: string;
@@ -18,19 +17,20 @@ const Map: React.FC = () => {
 
 	useEffect(() => {
 		// CSV Read
-		const fetchData = async() => {
+		const fetchData = async () => {
 			try {
-				const response = await fetch('/whc-sites.csv');
-				const csvText = await response.text();
-				const data = (await parseCSV(csvText)) as Location[];
-				setLocations(data);
-			} catch(error) {
-				console.error('Eror parsing CSV:', error)
+				const baseUrl = import.meta.env.VITE_API_BASE_URL;
+				const url = filter ? `${baseUrl}/locations?category=${filter}` : `${baseUrl}/locations`;
+				const response = await fetch(url);
+			  	const data = await response.json();
+			  	setLocations(data as Location[]);
+			} catch (error) {
+			  	console.error('Error fetching data from server:', error);
 			}
-		};
+		  };
 
 		fetchData();
-	}, []);
+	}, [filter]);
 
 	const filteredLocations = filter ? locations.filter((location) => location.category === filter) : locations;
 
