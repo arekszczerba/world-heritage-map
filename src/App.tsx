@@ -1,5 +1,6 @@
 import React from 'react';
 import Map from './components/Map';
+import './index.css'
 import './App.css'
 
 function App() {
@@ -10,5 +11,4 @@ function App() {
     </div>
   );
 }
-
 export default App;

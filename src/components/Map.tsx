@@ -35,37 +35,38 @@ const Map: React.FC = () => {
 	const filteredLocations = filter ? locations.filter((location) => location.category === filter) : locations;
 
   return (
-		<div>
+		<div className="p-4">
 			<Filter value={filter} onChange={setFilter} />
-			<MapContainer 
-      center={[20, 0]}
-      zoom={2}
-      style={{ height: "70vh", width: "100%" }}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-			{filteredLocations.map((location) => {
-				const lat = parseFloat(location.latitude);
-				const lng = parseFloat(location.longitude);
-				if (isNaN(lat) || isNaN(lng)) return null;
-				return (
-					<Marker
-						key={location.id_no}
-						position={[parseFloat(location.latitude),parseFloat(location.longitude)]}
-					>
+			<div className="w-full h-[80vh]">
+				<MapContainer 
+					center={[20, 0]}
+					zoom={2}
+					style={{ height: "70vh", width: "100%" }}>
+					<TileLayer
+						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+					/>
 
-						<Popup>
-							<strong>{location.name_en}</strong>
-							<br />
-							Category: {location.category}
-						</Popup>
-					</Marker>
-				);
-			})};
+					{filteredLocations.map((location) => {
+						const lat = parseFloat(location.latitude);
+						const lng = parseFloat(location.longitude);
+						if (isNaN(lat) || isNaN(lng)) return null;
+						return (
+							<Marker
+								key={location.id_no}
+								position={[parseFloat(location.latitude),parseFloat(location.longitude)]}
+							>
 
-    </MapContainer>
+								<Popup>
+									<strong>{location.name_en}</strong>
+									<br />
+									Category: {location.category}
+								</Popup>
+							</Marker>
+						);
+					})};
+				</MapContainer>
+			</div>
 		</div>
     
 	);
