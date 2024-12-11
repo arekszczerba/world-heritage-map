@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { parseCSV } from '../services/api';
+import Filter from './Filter'
 
 // TODO: Add more fileds?
 type Location = {
@@ -11,8 +12,9 @@ type Location = {
 	category: string;
 }
 
-const Map = () => {
+const Map: React.FC = () => {
   const [locations, setLocations] = useState<Location[]>([]);
+	const [filter, setFilter] = useState<string>('');
 
 	useEffect(() => {
 		// CSV Read
@@ -30,8 +32,12 @@ const Map = () => {
 		fetchData();
 	}, []);
 
+	const filteredLocations = filter ? locations.filter((location) => location.category === filter) : locations;
+
   return (
-    <MapContainer
+		<div>
+			<Filter value={filter} onChange={setFilter} />
+			<MapContainer 
       center={[20, 0]}
       zoom={2}
       style={{ height: "70vh", width: "100%" }}
@@ -40,24 +46,29 @@ const Map = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-			{locations.filter((location) => !isNaN(parseFloat(location.latitude)) && !isNaN(parseFloat(location.longitude))).map((location) => (
+			{filteredLocations.map((location) => {
+				const lat = parseFloat(location.latitude);
+				const lng = parseFloat(location.longitude);
+				if (isNaN(lat) || isNaN(lng)) return null;
+				return (
+					<Marker
+						key={location.id_no}
+						position={[parseFloat(location.latitude),parseFloat(location.longitude)]}
+					>
 
-				<Marker
-					key={location.id_no}
-					position={[parseFloat(location.latitude),parseFloat(location.longitude)]}
-				>
-					
-					<Popup>
-            <strong>{location.name_en}</strong>
-            <br />
-            Category: {location.category}
-          </Popup>
-				</Marker>
-
-			))};
+						<Popup>
+							<strong>{location.name_en}</strong>
+							<br />
+							Category: {location.category}
+						</Popup>
+					</Marker>
+				);
+			})};
 
     </MapContainer>
-  );
+		</div>
+    
+	);
 };
 
 export default Map;
